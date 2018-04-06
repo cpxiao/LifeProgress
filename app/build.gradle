@@ -1,0 +1,97 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "com.cpxiao.life.progress"
+        minSdkVersion 9
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled true //混淆
+            shrinkResources true // 移除无用的resource文件
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "default"
+    //多渠道打包
+    productFlavors {
+//        debug_gp {
+//            minSdkVersion 14
+//        }
+        gp {
+            dimension "default"
+            minSdkVersion 9
+        }
+    }
+
+    productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+    }
+
+    //修改生成的apk名字
+//    applicationVariants.all { variant ->
+//        variant.outputs.each { output ->
+////            def oldFile = output.outputFile
+//            def packageName = applicationId;
+//            if (variant.buildType.name.equals('release')) {
+//                def releaseApkName = packageName +
+//                        "_v" + defaultConfig.versionName +
+//                        "_" + variant.productFlavors[0].name +
+//                        "_" + new Date().format('yyyyMMddHHmm') +
+//                        '.apk'
+//                output.outputFile = new File(output.outputFile.parent, releaseApkName)
+//            }
+//            if (variant.buildType.name.equals('beta')) {
+//                def baseApkName = packageName +
+//                        "_v" + defaultConfig.versionName + "beta" +
+//                        "_" + variant.productFlavors[0].name +
+//                        "_" + new Date().format('yyyyMMddHHmm') +
+//                        '.apk'
+//                output.outputFile = new File(oldFile.parent, baseApkName)
+//            }
+//            if (variant.buildType.name.equals('debug')) {
+//
+//            }
+//        }
+//    }
+}
+
+
+
+apply plugin: 'com.google.gms.google-services'
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    compile 'com.android.support:appcompat-v7:25.4.0'
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:design:25.4.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    /**
+     * Ads Start
+     */
+    //友盟统计
+//    compile 'com.umeng.analytics:analytics:latest.integration'
+    compile 'com.umeng.analytics:analytics:6.1.1'
+    //Facebook广告 start
+    compile files('libs/AudienceNetwork_v4.7.jar')
+    //AdMob广告 start
+    compile 'com.google.firebase:firebase-ads:9.0.0'
+    /**
+     * Ads End
+     */
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+}
